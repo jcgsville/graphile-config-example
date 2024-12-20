@@ -1,25 +1,18 @@
-import type { Object } from 'ts-toolbelt'
 import type { GraphileConfig } from 'graphile-config'
+
 import { getServer } from './server.js'
+import { coalescePresetWithDefaults } from './config.js'
 
 export const run = async (preset: GraphileConfig.Preset): Promise<void> => {
-    const coalescedOptions = coalesceOptionsWithDefaults(preset)
+    const coalescedPreset = coalescePresetWithDefaults(preset)
 
-    const server = getServer()
+    const server = getServer(coalescedPreset)
     return new Promise((resolve) => {
-        server.listen(coalescedOptions.port, () => {
-            console.log(`Server is listening on port ${coalescedOptions.port}`)
+        server.listen(coalescedPreset.example.port, () => {
+            console.log(
+                `Server is listening on port ${coalescedPreset.example.port}`,
+            )
             resolve()
         })
     })
-}
-
-type CoalescedPreset = Object.Required<GraphileConfig.ExampleOptions, 'port'>
-
-const coalesceOptionsWithDefaults = (
-    preset: GraphileConfig.Preset,
-): CoalescedPreset => {
-    return {
-        port: preset.example?.port ?? 3000,
-    }
 }
