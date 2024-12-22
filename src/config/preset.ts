@@ -3,7 +3,11 @@ import type { GraphileConfig } from 'graphile-config'
 import {
     coalesceOpenWeatherOptionsWithDefaults,
     type CoalescedOpenWeatherOptions,
-} from './open-weather/config.js'
+} from '../open-weather/config.js'
+import {
+    coalesceExampleOptionsWithDefaults,
+    type CoalescedExampleOptions,
+} from './options.js'
 
 type GraphileConfigScopes = 'example' | 'openWeather'
 
@@ -27,24 +31,8 @@ export const coalescePresetWithDefaults = (
 
 declare global {
     namespace GraphileConfig {
-        interface ExampleOptions {
-            port?: number | null | undefined
-        }
-
         interface Preset {
             example?: ExampleOptions
         }
-    }
-}
-
-export type CoalescedExampleOptions = {
-    port: number
-}
-
-const coalesceExampleOptionsWithDefaults = (
-    exampleOptions?: GraphileConfig.ExampleOptions,
-): CoalescedExampleOptions => {
-    return {
-        port: exampleOptions?.port ?? 3000,
     }
 }

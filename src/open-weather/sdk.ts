@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import type { CoalescedOpenWeatherOptions } from './config.js'
 
 const OPEN_WEATHER_API_BASE_URL = 'https://api.openweathermap.org'
 
@@ -11,15 +12,15 @@ const CURRENT_WEATHER_RESPONSE_SCHEMA = z.object({
 })
 
 export const getCurrentTemperatureKelvin = async (
+    openWeatherOptions: CoalescedOpenWeatherOptions,
     lat: number,
     lon: number,
-    apiKey: string,
 ): Promise<number> => {
     const url = new URL(OPEN_WEATHER_API_BASE_URL)
     url.pathname = CURRENT_WEATHER_API_PATH
     url.searchParams.set('lat', lat.toString())
     url.searchParams.set('lon', lon.toString())
-    url.searchParams.set('appid', apiKey)
+    url.searchParams.set('appid', openWeatherOptions.apiKey)
 
     const response = await fetch(url.toString())
     if (!response.ok) {
