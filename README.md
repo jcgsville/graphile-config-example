@@ -25,9 +25,7 @@ Inspired by Graphile projects like [Postgraphile](https://postgraphile.org/) &
 
 ### CLI Mode
 
-TODO: see if this is correct after publishing
-
-Users could run this with npx:
+If this was published to npm, users might run this with npx:
 
 ```sh
 npx graphile-config-example --help
@@ -141,3 +139,4 @@ formatting in your editor.
   middleware types to remove the `as any` cast in
   [`middleware.ts`](./src/config/middleware.ts)
 - Add non-middleware functionality.
+- Actually publish the library to npm
