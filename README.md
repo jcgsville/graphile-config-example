@@ -131,3 +131,8 @@ npm run fmt
 If you use VS Code or editors based on VS Code, you can install the
 [recommended extensions](./.vscode/extensions.json) to get linting and
 formatting in your editor.
+
+## TODO
+
+- Modern eslint config
+- Disable-able option that doesn't use null-ish coalescing

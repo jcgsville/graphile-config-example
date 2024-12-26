@@ -3,7 +3,7 @@ import { requireEnvironmentVariable } from '../utils.js'
 declare global {
     namespace GraphileConfig {
         interface OpenWeatherOptions {
-            apiKey?: string | null | undefined
+            apiKey?: string | undefined
         }
 
         interface Preset {
