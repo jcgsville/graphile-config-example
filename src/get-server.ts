@@ -68,7 +68,7 @@ const handleCurrentTemperatureRequest = (
             .then((temperatureKelvin) => {
                 respondWithData(response, { temperatureKelvin })
             })
-            .catch((error) => {
+            .catch((error: unknown) => {
                 console.error(error)
                 respondWithInternalServerError(response)
             })
@@ -80,7 +80,7 @@ const handleCurrentTemperatureRequest = (
 }
 
 const constructRequestUrl = (request: http.IncomingMessage): URL | null => {
-    if (request.url) {
+    if (request.url && request.headers.host) {
         return new URL(request.url, `http://${request.headers.host}`)
     }
 

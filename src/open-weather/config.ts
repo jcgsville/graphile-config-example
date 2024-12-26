@@ -12,7 +12,7 @@ declare global {
     }
 }
 
-export type CoalescedOpenWeatherOptions = {
+export interface CoalescedOpenWeatherOptions {
     apiKey: string
 }
 

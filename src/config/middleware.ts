@@ -5,7 +5,7 @@ import type { CoalescedExampleOptions } from './options.js'
 import type { CoalescedOpenWeatherOptions } from '../open-weather/config.js'
 import type { CoalescedPreset } from './preset.js'
 
-export type MiddlewareContext = {
+export interface MiddlewareContext {
     example: CoalescedExampleOptions
     openWeather: CoalescedOpenWeatherOptions
 }
@@ -27,8 +27,9 @@ export const getExampleMiddleware = (
     orderedApply(
         coalescedPreset.plugins,
         (plugin) => plugin.example?.middleware,
-        (name, middlewareFunction, _plugin) => {
-            middleware.register(name, middlewareFunction as any)
+        (name, middlewareFunction) => {
+            // TODO: fix this type error
+            middleware.register(name, middlewareFunction)
         },
     )
 

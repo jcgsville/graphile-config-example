@@ -12,7 +12,7 @@ export const run = async (preset: GraphileConfig.Preset): Promise<void> => {
     return new Promise((resolve) => {
         server.listen(coalescedPreset.example.port, () => {
             console.log(
-                `Server is listening on port ${coalescedPreset.example.port}`,
+                `Server is listening on port ${String(coalescedPreset.example.port)}`,
             )
             resolve()
         })

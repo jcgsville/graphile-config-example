@@ -1,5 +1,5 @@
 /** @type {import('eslint').Linter.Config} */
-export default {
+module.exports = {
     root: true,
     env: {
         node: true,
@@ -12,7 +12,13 @@ export default {
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
     parserOptions: {
-        projectService: true,
+        projectService: {
+            allowDefaultProject: ['.eslintrc.cjs'],
+        },
         tsconfigRootDir: __dirname,
+    },
+    rules: {
+        // Graphile Config uses namespaces heavily
+        '@typescript-eslint/no-namespace': 'off',
     },
 }

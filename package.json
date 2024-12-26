@@ -9,6 +9,9 @@
     "build": "tsc",
     "check-types": "tsc --noEmit",
     "clean-built-artifacts": "rm -r dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "fmt": "prettier --write src *.md",
     "start:cli": "node ./dist/cli.js"
   },
   "devDependencies": {

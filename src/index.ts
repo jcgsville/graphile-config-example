@@ -1,2 +1,2 @@
 export { run } from './run.js'
-export { DefaultPreset } from './config/presets/default-preset.js'
+export { BasicAuthenticationPreset } from './config/presets/basic-authentication-preset.js'
