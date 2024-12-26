@@ -134,5 +134,10 @@ formatting in your editor.
 
 ## TODO
 
-- Modern eslint config
-- Disable-able option that doesn't use null-ish coalescing
+- Move away from legacy eslint config
+- Add an option to preset that is nullable - communicating to use that option
+  can be disabled.
+- Look into the typing of Graphile Config's `orderedApply()` and related
+  middleware types to remove the `as any` cast in
+  [`middleware.ts`](./src/config/middleware.ts)
+- Add non-middleware functionality.

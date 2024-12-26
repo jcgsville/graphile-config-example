@@ -10,11 +10,11 @@ export interface MiddlewareContext {
     openWeather: CoalescedOpenWeatherOptions
 }
 
-export type HandleRequestMiddlewareEvent = {
+export interface HandleRequestMiddlewareEvent extends Record<string, unknown> {
     context: MiddlewareContext
     request: http.IncomingMessage
     response: http.ServerResponse
-} & Record<string, unknown>
+}
 
 export interface ExampleMiddleware {
     handleRequest(event: HandleRequestMiddlewareEvent): void
@@ -28,8 +28,8 @@ export const getExampleMiddleware = (
         coalescedPreset.plugins,
         (plugin) => plugin.example?.middleware,
         (name, middlewareFunction) => {
-            // TODO: fix this type error
-            middleware.register(name, middlewareFunction)
+            // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any
+            middleware.register(name, middlewareFunction as any)
         },
     )
 
