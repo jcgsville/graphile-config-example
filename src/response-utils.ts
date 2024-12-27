@@ -1,6 +1,6 @@
 import http from 'node:http'
 
-export const respondWithData = (
+export const respondWithSuccess = (
     response: http.ServerResponse,
     data: Record<string, unknown>,
 ): void => {

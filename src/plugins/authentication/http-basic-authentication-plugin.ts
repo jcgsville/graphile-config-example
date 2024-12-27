@@ -6,6 +6,11 @@ import {
 
 declare global {
     namespace GraphileConfig {
+        // Plugins can add options to scopes via declaration merging.
+        // Right now, this project does not have a good way for plugins
+        // to add to the coalescing functionality. So plugin options
+        // need to be checked and validated in the middleware that relies
+        // on them. See `if (adminCredentials)` below.
         interface ExampleOptions {
             basicHttpAuthenticationAdminCredentials?:
                 | {
@@ -25,8 +30,13 @@ export const BasicHttpAuthenticationPlugin: GraphileConfig.Plugin = {
         middleware: {
             handleRequest: (next, event) => {
                 const adminCredentials =
-                    event.context.example
+                    event.context.coalescedPreset.example
                         .basicHttpAuthenticationAdminCredentials
+
+                // In this example, we just won't perform any authentication
+                // if the admin credentials are not set. In a real project,
+                // we would want to give plugins a hook into the preset coalescing
+                // process to enforce that required options are set.
                 if (adminCredentials) {
                     const authHeader = event.request.headers.authorization
                     if (!authHeader) {

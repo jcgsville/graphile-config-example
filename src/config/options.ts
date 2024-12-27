@@ -6,16 +6,16 @@ declare global {
         interface ExampleOptions {
             port?: number | undefined
         }
-    }
-}
 
-export type CoalescedExampleOptions = GraphileConfig.ExampleOptions & {
-    port: number
+        interface CoalescedExampleOptions extends ExampleOptions {
+            port: number
+        }
+    }
 }
 
 export const coalesceExampleOptionsWithDefaults = (
     exampleOptions?: GraphileConfig.ExampleOptions,
-): CoalescedExampleOptions => {
+): GraphileConfig.CoalescedExampleOptions => {
     return {
         ...exampleOptions,
         port:

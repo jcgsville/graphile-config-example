@@ -73,6 +73,20 @@ how you might create a scope to consolidate and share options related to a
 dependency. This is similar to how several Graphile projects use a common
 `pgServices` scope.
 
+## Declaration Merging
+
+This project and Graphile Config make heavy use of TypeScript declaration
+merging to allow multiple modules to contribute to the shared types `Preset`,
+`ExampleOptions`, `CoalescedExampleOptions`, etc.
+
+```ts
+declare global {
+    namespace GraphileConfig {
+        // ...
+    }
+}
+```
+
 ## Extending via Plugins
 
 This project demonstrates how library authors can use Graphile Config plugins to
@@ -140,3 +154,4 @@ formatting in your editor.
   [`middleware.ts`](./src/config/middleware.ts)
 - Add non-middleware functionality.
 - Actually publish the library to npm
+- Explore a way to make option coalescing extensible.
