@@ -90,14 +90,15 @@ declare global {
 ## Extending via Plugins
 
 This project demonstrates how library authors can use Graphile Config plugins to
-make their library extensible. This project declares (TODO: right word?) a
-single middleware action: `handleRequest` in the `example` scope.
+make their library extensible. This project declares a single scoped middleware
+action: `example.handleRequest`.
 
 The
 [`BasicHttpAuthenticationPlugin`](./src/plugins/authentication/http-basic-authentication-plugin.ts)
 and the
 [`EnforceAuthenticationPlugin`](./src/plugins/authentication/enforce-authentication-plugin.ts)
-add authentication logic that is run on every request. They also demonstrate of
+include middleware for this action that add authentication logic that is run on
+every request. These two plugins also demonstrate how
 `before`/`after`/`provides` can be used to control the order that plugins and
 middleware are registered and executed.
 
@@ -106,7 +107,8 @@ middleware are registered and executed.
 Libraries may export presets that contain sets of plugins that are often used
 together. This project exports a
 [`BasicAuthenticationPreset`](./src/config/presets/basic-authentication-preset.ts)
-for use by theoretical users that want to enable and enforce authentication.
+for use by theoretical users that want to enable and enforce basic HTTP
+authentication.
 
 ## Contributing
 
