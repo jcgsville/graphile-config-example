@@ -47,6 +47,10 @@ const coalescePresetUnderlyingAction: CoalescePresetUnderlyingAction = ({
         coalescedExampleOptionsValidationSchema,
     )
 
+    for (const schema of coalescedPresetValidationSchemas) {
+        schema.parse(preset)
+    }
+
     return {
         coalescedPresetValidationSchemas,
         partiallyCoalescedPreset: preset,
