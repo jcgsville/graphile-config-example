@@ -10,10 +10,20 @@ import type {
 } from './config/middleware.js'
 import {
     respondWithBadRequest,
-    respondWithData,
+    respondWithSuccess,
     respondWithInternalServerError,
     respondWithNotFound,
 } from './response-utils.js'
+
+/**
+ * The use of Zod and Node's http are not related to Graphile Config. We use them
+ * simply to demonstrate how one might use Graphile Config in a project that runs
+ * an HTTP server.
+ *
+ * If you are creating a larger project, you may choose to use a more sophisticated
+ * HTTP server library like [Koa](https://koajs.com/) or
+ * [Express](https://expressjs.com/).
+ */
 
 const CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA = z.object({
     lat: z.coerce.number().finite(),
@@ -31,6 +41,11 @@ export const getServer = (
             response,
         }
 
+        // By using `runSync`, we require that all middleware functions are synchronous.
+        // If they need to do anything asynchronous, they should use next.callback().
+        //
+        // We could, instead, use `run()` if we had a use case that benefited
+        // asynchronous middleware.
         middleware.runSync('handleRequest', event, ({ request, response }) => {
             const url = constructRequestUrl(request)
             if (!url) {
@@ -66,7 +81,7 @@ const handleCurrentTemperatureRequest = (
             Number(parseResult.data.lon),
         )
             .then((temperatureKelvin) => {
-                respondWithData(response, { temperatureKelvin })
+                respondWithSuccess(response, { temperatureKelvin })
             })
             .catch((error: unknown) => {
                 console.error(error)
