@@ -17,6 +17,8 @@ declare global {
                       username: string
                       password: string
                   }
+                // A user can set basicHttpAuthenticationAdminCredentials to
+                // undefined or null to opt out of authentication.
                 | undefined
                 | null
         }
