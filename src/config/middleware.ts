@@ -1,8 +1,8 @@
-import http from 'node:http'
-import { Middleware, orderedApply } from 'graphile-config'
+import http from "node:http";
+import { Middleware, orderedApply } from "graphile-config";
 
 export interface MiddlewareContext {
-    coalescedPreset: GraphileConfig.CoalescedPreset
+  coalescedPreset: GraphileConfig.CoalescedPreset;
 }
 
 /**
@@ -12,27 +12,27 @@ export interface MiddlewareContext {
  * should check for them explicitly before using them.
  */
 export interface HandleRequestMiddlewareEvent extends Record<string, unknown> {
-    context: MiddlewareContext
-    request: http.IncomingMessage
-    response: http.ServerResponse
+  context: MiddlewareContext;
+  request: http.IncomingMessage;
+  response: http.ServerResponse;
 }
 
 export interface ExampleMiddleware {
-    handleRequest(event: HandleRequestMiddlewareEvent): void
+  handleRequest(event: HandleRequestMiddlewareEvent): void;
 }
 
 export const getExampleMiddleware = (
-    coalescedPreset: GraphileConfig.CoalescedPreset,
+  coalescedPreset: GraphileConfig.CoalescedPreset,
 ): Middleware<ExampleMiddleware> => {
-    const middleware = new Middleware<ExampleMiddleware>()
-    orderedApply(
-        coalescedPreset.plugins,
-        (plugin) => plugin.example?.middleware,
-        (name, middlewareFunction) => {
-            // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any
-            middleware.register(name, middlewareFunction as any)
-        },
-    )
+  const middleware = new Middleware<ExampleMiddleware>();
+  orderedApply(
+    coalescedPreset.plugins,
+    (plugin) => plugin.example?.middleware,
+    (name, middlewareFunction) => {
+      // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any
+      middleware.register(name, middlewareFunction as any);
+    },
+  );
 
-    return middleware
-}
+  return middleware;
+};

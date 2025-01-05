@@ -1,31 +1,30 @@
 export const getNumberEnvironmentVariable = (
-    environmentVariableName: string,
-    rejectNaN = true,
+  environmentVariableName: string,
+  rejectNaN = true,
 ): number | undefined => {
-    const environmentVariable = process.env[environmentVariableName]
-    const parsed = environmentVariable
-        ? parseInt(environmentVariable, 10)
-        : undefined
+  const environmentVariable = process.env[environmentVariableName];
+  const parsed = environmentVariable
+    ? parseInt(environmentVariable, 10)
+    : undefined;
 
-    if (rejectNaN && parsed !== undefined && isNaN(parsed)) {
-        throw new Error(
-            `Environment variable is an invalid number: ${environmentVariableName}`,
-        )
-    }
+  if (rejectNaN && parsed !== undefined && isNaN(parsed)) {
+    throw new Error(
+      `Environment variable is an invalid number: ${environmentVariableName}`,
+    );
+  }
 
-    return parsed
-}
+  return parsed;
+};
 
 export const requireEnvironmentVariable = (
-    variableName: string,
-    errorMessage?: string,
+  variableName: string,
+  errorMessage?: string,
 ): string => {
-    const value = process.env[variableName]
-    if (!value) {
-        throw new Error(
-            errorMessage ??
-                `Missing required environment variable: ${variableName}.`,
-        )
-    }
-    return value
-}
+  const value = process.env[variableName];
+  if (!value) {
+    throw new Error(
+      errorMessage ?? `Missing required environment variable: ${variableName}.`,
+    );
+  }
+  return value;
+};

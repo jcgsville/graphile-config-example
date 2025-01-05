@@ -81,9 +81,9 @@ merging to allow multiple modules to contribute to the shared types `Preset`,
 
 ```ts
 declare global {
-    namespace GraphileConfig {
-        // ...
-    }
+  namespace GraphileConfig {
+    // ...
+  }
 }
 ```
 

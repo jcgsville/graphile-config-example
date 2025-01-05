@@ -1,18 +1,18 @@
-import http from 'node:http'
-import { z } from 'zod'
+import http from "node:http";
+import { z } from "zod";
 
-import { getCurrentTemperatureKelvin } from './open-weather/sdk.js'
-import type { Middleware } from 'graphile-config'
+import { getCurrentTemperatureKelvin } from "./open-weather/sdk.js";
+import type { Middleware } from "graphile-config";
 import type {
-    ExampleMiddleware,
-    HandleRequestMiddlewareEvent,
-} from './config/middleware.js'
+  ExampleMiddleware,
+  HandleRequestMiddlewareEvent,
+} from "./config/middleware.js";
 import {
-    respondWithBadRequest,
-    respondWithInternalServerError,
-    respondWithNotFound,
-    respondWithSuccess,
-} from './response-utils.js'
+  respondWithBadRequest,
+  respondWithInternalServerError,
+  respondWithNotFound,
+  respondWithSuccess,
+} from "./response-utils.js";
 
 /**
  * The use of Zod and Node's http are not related to Graphile Config. We use them
@@ -25,78 +25,75 @@ import {
  */
 
 const CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA = z.object({
-    lat: z.coerce.number().finite(),
-    lon: z.coerce.number().finite(),
-})
+  lat: z.coerce.number().finite(),
+  lon: z.coerce.number().finite(),
+});
 
 export const getServer = (
-    coalescedPreset: GraphileConfig.CoalescedPreset,
-    middleware: Middleware<ExampleMiddleware>,
+  coalescedPreset: GraphileConfig.CoalescedPreset,
+  middleware: Middleware<ExampleMiddleware>,
 ): http.Server =>
-    http.createServer((request, response) => {
-        const event: HandleRequestMiddlewareEvent = {
-            context: { coalescedPreset },
-            request,
-            response,
-        }
+  http.createServer((request, response) => {
+    const event: HandleRequestMiddlewareEvent = {
+      context: { coalescedPreset },
+      request,
+      response,
+    };
 
-        // By using `runSync`, we require that all middleware functions are synchronous.
-        // If they need to do anything asynchronous, they should use next.callback().
-        //
-        // We could, instead, use `run()` if we had a use case that benefited
-        // asynchronous middleware.
-        middleware.runSync('handleRequest', event, ({ request, response }) => {
-            const url = constructRequestUrl(request)
-            if (!url) {
-                respondWithInternalServerError(response)
-                return
-            }
+    // By using `runSync`, we require that all middleware functions are synchronous.
+    // If they need to do anything asynchronous, they should use next.callback().
+    //
+    // We could, instead, use `run()` if we had a use case that benefited
+    // asynchronous middleware.
+    middleware.runSync("handleRequest", event, ({ request, response }) => {
+      const url = constructRequestUrl(request);
+      if (!url) {
+        respondWithInternalServerError(response);
+        return;
+      }
 
-            if (
-                request.method === 'GET' &&
-                url.pathname === '/current-temperature'
-            ) {
-                handleCurrentTemperatureRequest(coalescedPreset, url, response)
-                return
-            }
+      if (request.method === "GET" && url.pathname === "/current-temperature") {
+        handleCurrentTemperatureRequest(coalescedPreset, url, response);
+        return;
+      }
 
-            respondWithNotFound(response)
-        })
-    })
+      respondWithNotFound(response);
+    });
+  });
 
 const handleCurrentTemperatureRequest = (
-    coalescedPreset: GraphileConfig.CoalescedPreset,
-    requestUrl: URL,
-    response: http.ServerResponse,
+  coalescedPreset: GraphileConfig.CoalescedPreset,
+  requestUrl: URL,
+  response: http.ServerResponse,
 ): void => {
-    const parseResult = CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA.safeParse(
-        Object.fromEntries(requestUrl.searchParams),
-    )
+  const parseResult = CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA.safeParse(
+    Object.fromEntries(requestUrl.searchParams),
+  );
 
-    if (parseResult.success) {
-        getCurrentTemperatureKelvin(
-            coalescedPreset.openWeather,
-            Number(parseResult.data.lat),
-            Number(parseResult.data.lon),
-        )
-            .then((temperatureKelvin) => {
-                respondWithSuccess(response, { temperatureKelvin })
-            })
-            .catch((error: unknown) => {
-                console.error(error)
-                respondWithInternalServerError(response)
-            })
-    } else {
-        respondWithBadRequest(response, {
-            queryParams: parseResult.error,
-        })
-    }
-}
+  if (parseResult.success) {
+    getCurrentTemperatureKelvin(
+      coalescedPreset.openWeather,
+      Number(parseResult.data.lat),
+      Number(parseResult.data.lon),
+    )
+      .then((temperatureKelvin) => {
+        respondWithSuccess(response, { temperatureKelvin });
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+        respondWithInternalServerError(response);
+      });
+  } else {
+    respondWithBadRequest(response, {
+      queryParams: parseResult.error,
+    });
+  }
+};
 
 const constructRequestUrl = (request: http.IncomingMessage): URL | null => {
-    if (request.url && request.headers.host) {
-        return new URL(request.url, `http://${request.headers.host}`)
-    }
+  if (request.url && request.headers.host) {
+    return new URL(request.url, `http://${request.headers.host}`);
+  }
 
-    return null
-}
+  return null;
+};

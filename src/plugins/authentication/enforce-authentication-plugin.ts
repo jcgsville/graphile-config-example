@@ -1,10 +1,10 @@
-import type { GraphileConfig } from 'graphile-config'
+import type { GraphileConfig } from "graphile-config";
 
-import { respondWithUnauthorized } from '../../response-utils.js'
+import { respondWithUnauthorized } from "../../response-utils.js";
 import {
-    AUTHENTICATED_CALLER_PROPERTY,
-    AUTHENTICATION_FEATURE_LABEL,
-} from './constants.js'
+  AUTHENTICATED_CALLER_PROPERTY,
+  AUTHENTICATION_FEATURE_LABEL,
+} from "./constants.js";
 
 /**
  * By separating the enforcement of authentication from the authentication plugin,
@@ -15,21 +15,21 @@ import {
  * successfully authenticated the request.
  */
 export const EnforceAuthenticationPlugin: GraphileConfig.Plugin = {
-    name: 'EnforceAuthenticationPlugin',
-    // This ensures that this plugin's middleware is run after any authentication
-    // plugins' middleware have run.
-    after: [AUTHENTICATION_FEATURE_LABEL],
-    example: {
-        middleware: {
-            handleRequest: (next, event) => {
-                if (event[AUTHENTICATED_CALLER_PROPERTY]) {
-                    next()
-                    return
-                }
+  name: "EnforceAuthenticationPlugin",
+  // This ensures that this plugin's middleware is run after any authentication
+  // plugins' middleware have run.
+  after: [AUTHENTICATION_FEATURE_LABEL],
+  example: {
+    middleware: {
+      handleRequest: (next, event) => {
+        if (event[AUTHENTICATED_CALLER_PROPERTY]) {
+          next();
+          return;
+        }
 
-                respondWithUnauthorized(event.response)
-                event.response.end()
-            },
-        },
+        respondWithUnauthorized(event.response);
+        event.response.end();
+      },
     },
-}
+  },
+};
