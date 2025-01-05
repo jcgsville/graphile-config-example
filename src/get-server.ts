@@ -48,7 +48,7 @@ export const getServer = (
     // By using `runSync`, we require that all middleware functions are synchronous.
     // If they need to do anything asynchronous, they should use next.callback().
     //
-    // We could, instead, use `run()` if we had a use case that benefited
+    // We could, instead, use `run()` if we had a use case that benefited from
     // asynchronous middleware.
     middleware.runSync("handleRequest", event, ({ request, response }) => {
       const url = constructRequestUrl(request);

@@ -34,7 +34,8 @@ declare global {
     // Right now, this project does not have a good way for plugins
     // to add to the coalescing functionality. So plugin options
     // need to be checked and validated in the middleware that relies
-    // on them. See `if (adminCredentials)` below.
+    // on them. See `if (adminCredentials)` in
+    // `src/plugins/authentication/http-basic-authentication-plugin.ts`.
     interface ExampleOptions {
       basicHttpAuthenticationAdminCredentials?:
         | {
