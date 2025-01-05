@@ -12,15 +12,3 @@ export const coalescePresetWithDefaults = (
     openWeather: coalesceOpenWeatherOptionsWithDefaults(preset.openWeather),
   };
 };
-
-declare global {
-  namespace GraphileConfig {
-    interface Preset {
-      example?: GraphileConfig.ExampleOptions;
-    }
-
-    interface CoalescedPreset extends Preset {
-      example: GraphileConfig.CoalescedExampleOptions;
-    }
-  }
-}

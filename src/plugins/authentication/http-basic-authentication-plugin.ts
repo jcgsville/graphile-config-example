@@ -4,27 +4,6 @@ import {
   AUTHENTICATION_FEATURE_LABEL,
 } from "./constants.js";
 
-declare global {
-  namespace GraphileConfig {
-    // Plugins can add options to scopes via declaration merging.
-    // Right now, this project does not have a good way for plugins
-    // to add to the coalescing functionality. So plugin options
-    // need to be checked and validated in the middleware that relies
-    // on them. See `if (adminCredentials)` below.
-    interface ExampleOptions {
-      basicHttpAuthenticationAdminCredentials?:
-        | {
-            username: string;
-            password: string;
-          }
-        // A user can set basicHttpAuthenticationAdminCredentials to
-        // undefined or null to opt out of authentication.
-        | undefined
-        | null;
-    }
-  }
-}
-
 export const BasicHttpAuthenticationPlugin: GraphileConfig.Plugin = {
   name: "BasicHttpAuthenticationPlugin",
   provides: [AUTHENTICATION_FEATURE_LABEL],

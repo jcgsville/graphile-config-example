@@ -1,25 +1,5 @@
 import { requireEnvironmentVariable } from "../env-utils.js";
 
-declare global {
-  namespace GraphileConfig {
-    interface OpenWeatherOptions {
-      apiKey?: string | undefined;
-    }
-
-    interface CoalescedOpenWeatherOptions {
-      apiKey: string;
-    }
-
-    interface Preset {
-      openWeather?: OpenWeatherOptions;
-    }
-
-    interface CoalescedPreset extends Preset {
-      openWeather: CoalescedOpenWeatherOptions;
-    }
-  }
-}
-
 export const OPEN_WEATHER_API_KEY_ENVIRONMENT_VARIABLE_NAME =
   "OPEN_WEATHER_API_KEY";
 const MISSING_OPEN_WEATHER_API_KEY_ERROR_MESSAGE =
