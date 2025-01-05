@@ -1,39 +1,21 @@
 {
-    "compilerOptions": {
-        // Inspired by https://www.totaltypescript.com/tsconfig-cheat-sheet#the-package
-        // but with a few extra options, especially around strictness
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "target": "es2022",
-        "allowJs": true,
-        "resolveJsonModule": true,
-        "moduleDetection": "force",
-        "isolatedModules": true,
-        "verbatimModuleSyntax": true,
-        "module": "NodeNext",
-        "outDir": "dist",
-        "sourceMap": true,
-        "declaration": true,
-        "lib": ["es2022"],
-        "useDefineForClassFields": true,
-        // Max strictness!
-        "strict": true,
-        "alwaysStrict": true,
-        "exactOptionalPropertyTypes": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitOverride": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "noUncheckedIndexedAccess": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "strictBindCallApply": true,
-        "strictBuiltinIteratorReturn": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "useUnknownInCatchVariables": true,
-    }
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "rootDir": "src",
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+
+    // Inspired by https://www.totaltypescript.com/tsconfig-cheat-sheet#the-package
+    // but with a few extra options, especially around strictness, and then all
+    // redundant options versus @tsconfig/node22 removed.
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
+}

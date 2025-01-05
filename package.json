@@ -5,7 +5,8 @@
   "description": "Example Node.js library configured using Graphile Config",
   "author": "Chandler Gonzales",
   "license": "MIT",
-  "main": "cli.js",
+  "main": "dist/cli.js",
+  "types": "dist/cli.d.ts",
   "scripts": {
     "build": "tsc",
     "check-types": "tsc --noEmit",
@@ -16,6 +17,7 @@
     "start:cli": "node ./dist/cli.js"
   },
   "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "8.18.1",
     "@typescript-eslint/parser": "8.18.1",
