@@ -41,12 +41,6 @@ declare global {
       openWeather?: OpenWeatherOptions;
     }
 
-    // Plugins can add options to scopes via declaration merging.
-    // Right now, this project does not have a good way for plugins
-    // to add to the coalescing functionality. So plugin options
-    // need to be checked and validated in the middleware that relies
-    // on them. See `if (adminCredentials)` in
-    // `src/plugins/authentication/http-basic-authentication-plugin.ts`.
     interface ExampleOptions {
       basicHttpAuthenticationAdminCredentials?:
         | {
@@ -94,15 +88,13 @@ function getExampleMiddleware(resolvedPreset: GraphileConfig.ResolvedPreset) {
   return middleware;
 }
 
-/**
- * The use of Zod and Node's http are not related to Graphile Config. We use them
- * simply to demonstrate how one might use Graphile Config in a project that runs
- * an HTTP server.
- *
- * If you are creating a larger project, you may choose to use a more sophisticated
- * HTTP server library like [Koa](https://koajs.com/) or
- * [Express](https://expressjs.com/).
- */
+// The use of Zod and Node's `http` are not related to Graphile Config. We use them
+// simply to demonstrate how one might use Graphile Config in a project that runs
+// an HTTP server.
+//
+// If you are creating a larger project, you may choose to use a more sophisticated
+// HTTP server library like [Koa](https://koajs.com/) or
+// [Express](https://expressjs.com/).
 
 const CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA = z.object({
   lat: z.coerce.number().finite(),
