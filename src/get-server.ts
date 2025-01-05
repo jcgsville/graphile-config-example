@@ -6,7 +6,7 @@ import type { Middleware } from "graphile-config";
 import type {
   ExampleMiddleware,
   HandleRequestMiddlewareEvent,
-} from "./config/middleware.js";
+} from "./interfaces.js";
 import {
   respondWithBadRequest,
   respondWithInternalServerError,

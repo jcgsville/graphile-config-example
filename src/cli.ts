@@ -3,7 +3,7 @@ import { hideBin } from "yargs/helpers";
 import { loadConfig } from "graphile-config/load";
 import { resolvePreset } from "graphile-config";
 
-import { run } from "./run.js";
+import { run } from "./index.js";
 
 /**
  * As a library author, you might decide to expose a CLI interface for your library. If you do, you
