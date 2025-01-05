@@ -13,24 +13,23 @@ import {
 
 import { getServer } from "./get-server.js";
 import { coalescePresetWithDefaults } from "./config/preset.js";
-import { ExampleMiddleware } from "./interfaces.js";
+import { CoalescedPreset, ExampleMiddleware } from "./interfaces.js";
 
 export { BasicAuthenticationPreset } from "./config/presets/basic-authentication-preset.js";
 
 declare global {
   namespace GraphileConfig {
+    interface Plugin {
+      example?: {
+        middleware?: MiddlewareHandlers<ExampleMiddleware>;
+      };
+    }
+
     interface Preset {
       example?: GraphileConfig.ExampleOptions;
+      openWeather?: OpenWeatherOptions;
     }
 
-    interface CoalescedPreset extends Preset {
-      example: GraphileConfig.CoalescedExampleOptions;
-    }
-  }
-}
-
-declare global {
-  namespace GraphileConfig {
     // Plugins can add options to scopes via declaration merging.
     // Right now, this project does not have a good way for plugins
     // to add to the coalescing functionality. So plugin options
@@ -46,48 +45,12 @@ declare global {
         // undefined or null to opt out of authentication.
         | undefined
         | null;
-    }
-  }
-}
 
-declare global {
-  namespace GraphileConfig {
-    interface OpenWeatherOptions {
-      apiKey?: string | undefined;
-    }
-
-    interface CoalescedOpenWeatherOptions {
-      apiKey: string;
-    }
-
-    interface Preset {
-      openWeather?: OpenWeatherOptions;
-    }
-
-    interface CoalescedPreset extends Preset {
-      openWeather: CoalescedOpenWeatherOptions;
-    }
-  }
-}
-
-declare global {
-  namespace GraphileConfig {
-    interface ExampleOptions {
       port?: number | undefined;
     }
 
-    interface CoalescedExampleOptions extends ExampleOptions {
-      port: number;
-    }
-  }
-}
-
-declare global {
-  namespace GraphileConfig {
-    interface Plugin {
-      example?: {
-        middleware?: MiddlewareHandlers<ExampleMiddleware>;
-      };
+    interface OpenWeatherOptions {
+      apiKey?: string | undefined;
     }
   }
 }
@@ -107,7 +70,7 @@ export async function run(preset: GraphileConfig.Preset) {
   });
 }
 
-function getExampleMiddleware(coalescedPreset: GraphileConfig.CoalescedPreset) {
+function getExampleMiddleware(coalescedPreset: CoalescedPreset) {
   const middleware = new Middleware<ExampleMiddleware>();
   orderedApply(
     coalescedPreset.plugins,

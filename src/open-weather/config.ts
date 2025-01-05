@@ -1,4 +1,5 @@
 import { requireEnvironmentVariable } from "../env-utils.js";
+import { CoalescedOpenWeatherOptions } from "../interfaces.js";
 
 export const OPEN_WEATHER_API_KEY_ENVIRONMENT_VARIABLE_NAME =
   "OPEN_WEATHER_API_KEY";
@@ -8,7 +9,7 @@ const MISSING_OPEN_WEATHER_API_KEY_ERROR_MESSAGE =
 
 export const coalesceOpenWeatherOptionsWithDefaults = (
   openWeatherOptions?: GraphileConfig.OpenWeatherOptions,
-): GraphileConfig.CoalescedOpenWeatherOptions => {
+): CoalescedOpenWeatherOptions => {
   return {
     apiKey:
       openWeatherOptions?.apiKey ??

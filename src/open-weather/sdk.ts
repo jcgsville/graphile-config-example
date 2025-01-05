@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CoalescedOpenWeatherOptions } from "../interfaces.js";
 
 const OPEN_WEATHER_API_BASE_URL = "https://api.openweathermap.org";
 
@@ -11,7 +12,7 @@ const CURRENT_WEATHER_RESPONSE_SCHEMA = z.object({
 });
 
 export const getCurrentTemperatureKelvin = async (
-  openWeatherOptions: GraphileConfig.CoalescedOpenWeatherOptions,
+  openWeatherOptions: CoalescedOpenWeatherOptions,
   lat: number,
   lon: number,
 ): Promise<number> => {

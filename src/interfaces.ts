@@ -1,7 +1,7 @@
 import http from "node:http";
 
 export interface MiddlewareContext {
-  coalescedPreset: GraphileConfig.CoalescedPreset;
+  coalescedPreset: CoalescedPreset;
 }
 
 /**
@@ -18,4 +18,17 @@ export interface HandleRequestMiddlewareEvent extends Record<string, unknown> {
 
 export interface ExampleMiddleware {
   handleRequest(event: HandleRequestMiddlewareEvent): void;
+}
+
+export interface CoalescedPreset extends GraphileConfig.Preset {
+  example: CoalescedExampleOptions;
+  openWeather: CoalescedOpenWeatherOptions;
+}
+
+export interface CoalescedOpenWeatherOptions {
+  apiKey: string;
+}
+
+export interface CoalescedExampleOptions extends GraphileConfig.ExampleOptions {
+  port: number;
 }

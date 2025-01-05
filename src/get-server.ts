@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getCurrentTemperatureKelvin } from "./open-weather/sdk.js";
 import type { Middleware } from "graphile-config";
 import type {
+  CoalescedPreset,
   ExampleMiddleware,
   HandleRequestMiddlewareEvent,
 } from "./interfaces.js";
@@ -30,7 +31,7 @@ const CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA = z.object({
 });
 
 export const getServer = (
-  coalescedPreset: GraphileConfig.CoalescedPreset,
+  coalescedPreset: CoalescedPreset,
   middleware: Middleware<ExampleMiddleware>,
 ): http.Server =>
   http.createServer((request, response) => {
@@ -62,7 +63,7 @@ export const getServer = (
   });
 
 const handleCurrentTemperatureRequest = (
-  coalescedPreset: GraphileConfig.CoalescedPreset,
+  coalescedPreset: CoalescedPreset,
   requestUrl: URL,
   response: http.ServerResponse,
 ): void => {
