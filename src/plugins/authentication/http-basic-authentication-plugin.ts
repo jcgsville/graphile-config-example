@@ -11,8 +11,8 @@ export const BasicHttpAuthenticationPlugin: GraphileConfig.Plugin = {
     middleware: {
       handleRequest: (next, event) => {
         const adminCredentials =
-          event.context.coalescedPreset.example
-            .basicHttpAuthenticationAdminCredentials;
+          event.context.resolvedPreset.example
+            ?.basicHttpAuthenticationAdminCredentials;
 
         // In this example, we just won't perform any authentication
         // if the admin credentials are not set. In a real project,

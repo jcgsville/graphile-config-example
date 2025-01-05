@@ -4,9 +4,9 @@ import { z } from "zod";
 import { getCurrentTemperatureKelvin } from "./open-weather/sdk.js";
 import type { Middleware } from "graphile-config";
 import type {
-  CoalescedPreset,
   ExampleMiddleware,
   HandleRequestMiddlewareEvent,
+  MiddlewareContext,
 } from "./interfaces.js";
 import {
   respondWithBadRequest,
@@ -14,6 +14,8 @@ import {
   respondWithNotFound,
   respondWithSuccess,
 } from "./response-utils.js";
+import { getDefaultAPIKey } from "./open-weather/config.js";
+import { getNumberEnvironmentVariable } from "./env-utils.js";
 
 /**
  * The use of Zod and Node's http are not related to Graphile Config. We use them
@@ -31,12 +33,14 @@ const CURRENT_TEMPERATURE_SEARCH_PARAM_SCHEMA = z.object({
 });
 
 export const getServer = (
-  coalescedPreset: CoalescedPreset,
+  resolvedPreset: GraphileConfig.ResolvedPreset,
   middleware: Middleware<ExampleMiddleware>,
-): http.Server =>
-  http.createServer((request, response) => {
+): http.Server => {
+  const { openWeather: { apiKey = getDefaultAPIKey() } = {} } = resolvedPreset;
+  const context: MiddlewareContext = { resolvedPreset, apiKey };
+  const server = http.createServer((request, response) => {
     const event: HandleRequestMiddlewareEvent = {
-      context: { coalescedPreset },
+      context,
       request,
       response,
     };
@@ -54,16 +58,18 @@ export const getServer = (
       }
 
       if (request.method === "GET" && url.pathname === "/current-temperature") {
-        handleCurrentTemperatureRequest(coalescedPreset, url, response);
+        handleCurrentTemperatureRequest(context, url, response);
         return;
       }
 
       respondWithNotFound(response);
     });
   });
+  return server;
+};
 
 const handleCurrentTemperatureRequest = (
-  coalescedPreset: CoalescedPreset,
+  context: MiddlewareContext,
   requestUrl: URL,
   response: http.ServerResponse,
 ): void => {
@@ -73,7 +79,7 @@ const handleCurrentTemperatureRequest = (
 
   if (parseResult.success) {
     getCurrentTemperatureKelvin(
-      coalescedPreset.openWeather,
+      context.apiKey,
       Number(parseResult.data.lat),
       Number(parseResult.data.lon),
     )
@@ -98,3 +104,7 @@ const constructRequestUrl = (request: http.IncomingMessage): URL | null => {
 
   return null;
 };
+
+export function getDefaultPort() {
+  return getNumberEnvironmentVariable("PORT") ?? 4000;
+}

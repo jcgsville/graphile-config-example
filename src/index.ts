@@ -9,11 +9,11 @@ import {
   GraphileConfig,
   orderedApply,
   MiddlewareHandlers,
+  resolvePreset,
 } from "graphile-config";
 
-import { getServer } from "./get-server.js";
-import { coalescePresetWithDefaults } from "./config/preset.js";
-import { CoalescedPreset, ExampleMiddleware } from "./interfaces.js";
+import { getDefaultPort, getServer } from "./get-server.js";
+import { ExampleMiddleware } from "./interfaces.js";
 
 export { BasicAuthenticationPreset } from "./config/presets/basic-authentication-preset.js";
 
@@ -56,24 +56,23 @@ declare global {
 }
 
 export async function run(preset: GraphileConfig.Preset) {
-  const coalescedPreset = coalescePresetWithDefaults(preset);
-  const middleware = getExampleMiddleware(coalescedPreset);
+  const resolvedPreset = resolvePreset(preset);
+  const middleware = getExampleMiddleware(resolvedPreset);
+  const { example: { port = getDefaultPort() } = {} } = resolvedPreset;
 
-  const server = getServer(coalescedPreset, middleware);
+  const server = getServer(resolvedPreset, middleware);
   return new Promise<void>((resolve) => {
-    server.listen(coalescedPreset.example.port, () => {
-      console.log(
-        `Server is listening on port ${String(coalescedPreset.example.port)}`,
-      );
+    server.listen(port, () => {
+      console.log(`Server is listening on port ${String(port)}`);
       resolve();
     });
   });
 }
 
-function getExampleMiddleware(coalescedPreset: CoalescedPreset) {
+function getExampleMiddleware(resolvedPreset: GraphileConfig.ResolvedPreset) {
   const middleware = new Middleware<ExampleMiddleware>();
   orderedApply(
-    coalescedPreset.plugins,
+    resolvedPreset.plugins,
     (plugin) => plugin.example?.middleware,
     (name, middlewareFunction) => {
       // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any
