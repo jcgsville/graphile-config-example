@@ -1,6 +1,6 @@
 import type { GraphileConfig } from "graphile-config";
 
-import { respondWithUnauthorized } from "../../response-utils.js";
+import { respondWithUnauthorized } from "../utils.js";
 import {
   AUTHENTICATED_CALLER_PROPERTY,
   AUTHENTICATION_FEATURE_LABEL,
