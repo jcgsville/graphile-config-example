@@ -1,5 +1,5 @@
 import { EnforceAuthenticationPlugin } from "../plugins/enforce-authentication-plugin.js";
-import { BasicHttpAuthenticationPlugin } from "../plugins/http-basic-authentication-plugin.js";
+import { BasicHttpAuthenticationPlugin } from "../plugins/basic-http-authentication-plugin.js";
 
 /**
  * Library authors may bundle together and export commonly used plugins as a

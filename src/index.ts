@@ -26,8 +26,8 @@ import {
   constructRequestUrl,
 } from "./utils.js";
 
-export { BasicAuthenticationPreset } from "./presets/basic-authentication-preset.js";
-
+// To avoid problems in which TypeScript does not import a declaration file,
+// all Graphile Config types should be defined in a single place: index.ts.
 declare global {
   namespace GraphileConfig {
     interface Plugin {
@@ -42,16 +42,6 @@ declare global {
     }
 
     interface ExampleOptions {
-      basicHttpAuthenticationAdminCredentials?:
-        | {
-            username: string;
-            password: string;
-          }
-        // A user can set basicHttpAuthenticationAdminCredentials to
-        // undefined or null to opt out of authentication.
-        | undefined
-        | null;
-
       port?: number | undefined;
     }
 

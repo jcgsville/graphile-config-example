@@ -4,6 +4,28 @@ import {
   AUTHENTICATION_FEATURE_LABEL,
 } from "./constants.js";
 
+// Normally, all the GraphileConfig options for a library are defined in a
+// single place: index.ts. This helps avoid problems in which TypeScript
+// does not import a declaration file. However, if you have plugins that are
+// exported in a separate entrypoint for the library, you can define the
+// Graphile Config options with the plugin such that they are only merged
+// when the plugin is imported.
+declare global {
+  namespace GraphileConfig {
+    interface ExampleOptions {
+      basicHttpAuthenticationAdminCredentials?:
+        | {
+            username: string;
+            password: string;
+          }
+        // A user can set basicHttpAuthenticationAdminCredentials to
+        // undefined or null to opt out of authentication.
+        | undefined
+        | null;
+    }
+  }
+}
+
 export const BasicHttpAuthenticationPlugin: GraphileConfig.Plugin = {
   name: "BasicHttpAuthenticationPlugin",
   provides: [AUTHENTICATION_FEATURE_LABEL],
