@@ -77,13 +77,13 @@ dependency. This is similar to how several Graphile projects use a common
 
 This project and Graphile Config make heavy use of TypeScript declaration
 merging to allow multiple modules to contribute to the shared types `Preset`,
-`ExampleOptions`, `CoalescedExampleOptions`, etc.
+`ExampleOptions`, etc.
 
 ```ts
 declare global {
-    namespace GraphileConfig {
-        // ...
-    }
+  namespace GraphileConfig {
+    // ...
+  }
 }
 ```
 
@@ -148,12 +148,8 @@ formatting in your editor.
 
 ## TODO
 
-- Move away from legacy eslint config
-- Add an option to preset that is nullable - communicating to use that option
-  can be disabled.
 - Look into the typing of Graphile Config's `orderedApply()` and related
   middleware types to remove the `as any` cast in
   [`middleware.ts`](./src/config/middleware.ts)
 - Add non-middleware functionality.
 - Actually publish the library to npm
-- Explore a way to make option coalescing extensible.

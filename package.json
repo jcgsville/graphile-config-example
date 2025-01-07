@@ -1,20 +1,41 @@
 {
   "name": "graphile-config-example",
+  "type": "module",
   "version": "0.0.1",
   "description": "Example Node.js library configured using Graphile Config",
   "author": "Chandler Gonzales",
   "license": "MIT",
-  "main": "cli.js",
+  "main": "dist/cli.js",
+  "types": "dist/cli.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./plugins/basic-http-authentication-plugin": {
+      "types": "./dist/plugins/basic-http-authentication-plugin.d.ts",
+      "import": "./dist/plugins/basic-http-authentication-plugin.js"
+    },
+    "./plugins/enforce-authentication-plugin": {
+      "types": "./dist/plugins/enforce-authentication-plugin.d.ts",
+      "import": "./dist/plugins/enforce-authentication-plugin.js"
+    },
+    "./presets/basic-authentication-preset": {
+      "types": "./dist/presets/basic-authentication-preset.d.ts",
+      "import": "./dist/presets/basic-authentication-preset.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "check-types": "tsc --noEmit",
     "clean-built-artifacts": "rm -r dist",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
-    "fmt": "prettier --write src *.md",
+    "fmt": "prettier --write src *.{md,js,cjs,mjs,json}",
     "start:cli": "node ./dist/cli.js"
   },
   "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "8.18.1",
     "@typescript-eslint/parser": "8.18.1",
@@ -29,5 +50,7 @@
     "yargs": "17.7.2",
     "zod": "^3.24.1"
   },
-  "type": "module"
+  "prettier": {
+    "proseWrap": "always"
+  }
 }
